@@ -31,29 +31,29 @@ class McqsController extends Controller
             if($request->has('uni') && $request->has('category_name') && !empty($request->category_name) ){
 
                 if($request->has('cat_img') && !empty($request->cat_img)){
-                    $cat_img = compressImagePHP($request, 'cat_img');
+                    $cat_img = $request->cat_img;
                     $res = (new MCQsCategory())->store($cat_img, $request->category_name, $request->testType, $request->uni);
                 } else{
                     $cat_img = null;
-                    $res = (new MCQsCategory())->store($cat_img, $request->category_name);
+                    $res = (new MCQsCategory())->store($cat_img, $request->category_name, $request->testType, $request->uni);
                 }
 
                 if($request->has('subject_name') && !empty($request->subject_name)) {
                     $mcq_category_id = $res->id;
 
                     if($request->has('subject_img') && !empty($request->subject_img)) {
-                        $sub_img = compressImagePHP($request, 'subject_img');
-                        $res = (new MCQSubject())->store($mcq_category_id, $sub_img, $request->subject_name);
+//                        $sub_img = compressImagePHP($request, 'subject_img');
+                        $res = (new MCQSubject())->store($mcq_category_id, $request->subject_img, $request->subject_name);
                     } else{
                         $sub_img = null;
                         $res = (new MCQSubject())->store($mcq_category_id, $sub_img, $request->subject_name);
                     }
 
-                    if($request->has('sub_subject_name') && $request->sub_subject_name && !empty($request->paper_time)){
+                    if($request->has('sub_subject_name') && !empty($request->sub_subject_name) && !empty($request->paper_time)){
                         $mcq_subject_id = $res->id;
 
-                        if($request->has('sub_subject_img') && $request->sub_subject_img) {
-                            $sub_subject_img = compressImagePHP($request, 'sub_subject_img');
+                        if($request->has('sub_subject_img') && !empty($request->sub_subject_img)) {
+                            $sub_subject_img = $request->sub_subject_img;
                         } else{
                             $sub_subject_img = null;
                         }
