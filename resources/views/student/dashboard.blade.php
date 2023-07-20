@@ -61,8 +61,8 @@
                                         {{--                            <p class="pt-1 mt-0 mb-3" style="font-weight: bold; color: #122B83">{{$m->paper_type}}</p>--}}
                                         {{--                                    <a href="#" onclick="document.getElementById('mcq-form1-{{$m->id}}').submit()" class="btn btn-warning">Resume {{count($m->data)}} / {{count($m->subSubject->questions)}}</a>--}}
                                         {{--                            <a href="#" onclick="document.getElementById('mcq-form2-{{$m->id}}').submit()" class="btn btn-primary">Start Over</a>--}}
-                                        <form action="{{ route('student.get-mcqs-ques') }}" id="mcq-form1-{{$m->id}}" method="post">
-                                            @csrf
+                                        <form action="{{ route('student.get-mcqs-ques-hjk') }}" id="mcq-form1-{{$m->id}}" method="get">
+{{--                                            @csrf--}}
                                             <input type="hidden" name="paper_type" class="papr_type" value="{{$m->paper_type}}">
                                             <input type="hidden" name="activity" value="resume">
                                             <input type="hidden" name="mcqs" value="{{$m->id}}">

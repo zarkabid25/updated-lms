@@ -136,21 +136,6 @@
                         </div>
 
                         <div class="card-body" id="parent">
-{{--                            <nav aria-label="breadcrumb" class="mb-4">--}}
-{{--                                <ol class="breadcrumb bg-white">--}}
-{{--                                    <li class="pr-2">--}}
-{{--                                        <i class="fa fa-tag"></i>--}}
-{{--                                    </li>--}}
-
-{{--                                    <li class="breadcrumb-item"><a href="#"--}}
-{{--                                            style="text-decoration: none;">{{ ucwords($questions[0]->subject->subject_name) }}</a>--}}
-{{--                                    </li>--}}
-{{--                                    <li class="breadcrumb-item"><a href="#"--}}
-{{--                                            style="text-decoration: none;">{{ ucwords($questions[0]->subSubject->sub_subject_name) }}</a>--}}
-{{--                                    </li>--}}
-{{--                                    --}}{{--                                <li class="breadcrumb-item " aria-current="page">Test</li> --}}
-{{--                                </ol>--}}
-{{--                            </nav>--}}
 
                         <span class="pl-4" style="font-family: Roboto;font-size: 1rem; color: #1E1E1E">{!! ucfirst($question->ques) !!}</span>
 
@@ -191,58 +176,113 @@
                         </div>
                     </div>
 
-                    <div class="row pl-4">
+                    @if(ucwords(json_decode($questions[0]->subject->category)->category_name) == 'English')
                         @forelse($question->options as $op)
-                            <div class="col-md-6 pb-2">
-                                @php
-                                    $opt_name = substr($op->opt_key, '4');
-                                @endphp
+                            <div class="row pl-4">
+                                <div class="col-md-6 pb-2">
+                                    @php
+                                        $opt_name = substr($op->opt_key, '4');
+                                    @endphp
 
-                                <input type="hidden" class="que_id" value="{{ $op->mcq_question_id }}">
-                                <label id="label{{ $op->id }}" class="btn mt-3 border shadow"
-                                       style="width: 100%; text-align: left; border: 1px solid #004643 !important; border-radius: 13px; @if ($option_val == $op->id && $option_val !== $question->correct_option->mcq_option_id) background:#c70d0d6e @endif @if ($option_val !== 0 && $op->id === $question->correct_option->mcq_option_id) background:#19875459 @endif">
-                                    <input type="radio" name="option{{ $op->mcq_question_id }}"
-                                           data-full="{{ $question->options }}" data-id="{{ $op->id }}"
-                                           style="visibility: hidden; display: inline-grid;" data-ques="{{ $op->mcq_question_id }}"
-                                           value="{{ $op->opt_value }}"
-                                           @if ($option_val == $op->id) checked @endif class="option">
-                                    @if($opt_name == 'a' || $opt_name == 'A')
-{{--                                        <span>{{ ucwords($opt_name) . ') ' }} </span>--}}
-                                        <span>
+                                    <input type="hidden" class="que_id" value="{{ $op->mcq_question_id }}">
+                                    <label id="label{{ $op->id }}" class="btn mt-3 border shadow"
+                                           style="width: 100%; text-align: left; border: 1px solid #004643 !important; border-radius: 13px; @if ($option_val == $op->id && $option_val !== $question->correct_option->mcq_option_id) background:#c70d0d6e @endif @if ($option_val !== 0 && $op->id === $question->correct_option->mcq_option_id) background:#19875459 @endif">
+                                        <input type="radio" name="option{{ $op->mcq_question_id }}"
+                                               data-full="{{ $question->options }}" data-id="{{ $op->id }}"
+                                               style="visibility: hidden; display: inline-grid;" data-ques="{{ $op->mcq_question_id }}"
+                                               value="{{ $op->opt_value }}"
+                                               @if ($option_val == $op->id) checked @endif class="option">
+                                        @if($opt_name == 'a' || $opt_name == 'A')
+                                            {{--                                        <span>{{ ucwords($opt_name) . ') ' }} </span>--}}
+                                            <span>
                                             <svg width="30" height="30" viewBox="0 0 54 54" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <circle cx="27" cy="27" r="26.5" stroke="#F9BC60"/>
                                             <path d="M27.3711 17.5615L20.3105 37H17.4248L25.5547 15.6719H27.415L27.3711 17.5615ZM33.2891 37L26.2139 17.5615L26.1699 15.6719H28.0303L36.1895 37H33.2891ZM32.9229 29.1045V31.4189H20.9404V29.1045H32.9229Z" fill="#F9BC60"/>
                                             </svg>
                                         </span>
-                                    @elseif($opt_name == 'b' || $opt_name == 'b')
-                                        <span>
+                                        @elseif($opt_name == 'b' || $opt_name == 'b')
+                                            <span>
                                             <svg width="30" height="30" viewBox="0 0 54 54" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <circle cx="27" cy="27" r="26.5" stroke="#F9BC60"/>
                                             <path d="M27.0781 27.0244H21.6729L21.6436 24.7539H26.5508C27.3613 24.7539 28.0693 24.6172 28.6748 24.3438C29.2803 24.0703 29.749 23.6797 30.0811 23.1719C30.4229 22.6543 30.5938 22.0391 30.5938 21.3262C30.5938 20.5449 30.4424 19.9102 30.1396 19.4219C29.8467 18.9238 29.3926 18.5625 28.7773 18.3379C28.1719 18.1035 27.4004 17.9863 26.4629 17.9863H22.3027V37H19.4756V15.6719H26.4629C27.5566 15.6719 28.5332 15.7842 29.3926 16.0088C30.252 16.2236 30.9795 16.5654 31.5752 17.0342C32.1807 17.4932 32.6396 18.0791 32.9521 18.792C33.2646 19.5049 33.4209 20.3594 33.4209 21.3555C33.4209 22.2344 33.1963 23.0303 32.7471 23.7432C32.2979 24.4463 31.6729 25.0225 30.8721 25.4717C30.0811 25.9209 29.1533 26.209 28.0889 26.3359L27.0781 27.0244ZM26.9463 37H20.5596L22.1562 34.7002H26.9463C27.8447 34.7002 28.6064 34.5439 29.2314 34.2314C29.8662 33.9189 30.3496 33.4795 30.6816 32.9131C31.0137 32.3369 31.1797 31.6582 31.1797 30.877C31.1797 30.0859 31.0381 29.4023 30.7549 28.8262C30.4717 28.25 30.0273 27.8057 29.4219 27.4932C28.8164 27.1807 28.0352 27.0244 27.0781 27.0244H23.0498L23.0791 24.7539H28.5869L29.1875 25.5742C30.2129 25.6621 31.082 25.9551 31.7949 26.4531C32.5078 26.9414 33.0498 27.5664 33.4209 28.3281C33.8018 29.0898 33.9922 29.9297 33.9922 30.8477C33.9922 32.1758 33.6992 33.2988 33.1133 34.2168C32.5371 35.125 31.7217 35.8184 30.667 36.2969C29.6123 36.7656 28.3721 37 26.9463 37Z" fill="#F9BC60"/>
                                             </svg>
                                         </span>
-                                    @elseif($opt_name == 'c' || $opt_name == 'C')
-                                        <span>
+                                        @elseif($opt_name == 'c' || $opt_name == 'C')
+                                            <span>
                                             <svg width="30" height="30" viewBox="0 0 54 54" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <circle cx="27" cy="27" r="26.5" stroke="#F9BC60"/>
                                             <path d="M32.3516 30.2178H35.1641C35.0176 31.5654 34.6318 32.7715 34.0068 33.8359C33.3818 34.9004 32.498 35.7451 31.3555 36.3701C30.2129 36.9854 28.7871 37.293 27.0781 37.293C25.8281 37.293 24.6904 37.0586 23.665 36.5898C22.6494 36.1211 21.7754 35.457 21.043 34.5977C20.3105 33.7285 19.7441 32.6885 19.3438 31.4775C18.9531 30.2568 18.7578 28.8994 18.7578 27.4053V25.2812C18.7578 23.7871 18.9531 22.4346 19.3438 21.2236C19.7441 20.0029 20.3154 18.958 21.0576 18.0889C21.8096 17.2197 22.7129 16.5508 23.7676 16.082C24.8223 15.6133 26.0088 15.3789 27.3271 15.3789C28.9385 15.3789 30.3008 15.6816 31.4141 16.2871C32.5273 16.8926 33.3916 17.7324 34.0068 18.8066C34.6318 19.8711 35.0176 21.1064 35.1641 22.5127H32.3516C32.2148 21.5166 31.9609 20.6621 31.5898 19.9492C31.2188 19.2266 30.6914 18.6699 30.0078 18.2793C29.3242 17.8887 28.4307 17.6934 27.3271 17.6934C26.3799 17.6934 25.5449 17.874 24.8223 18.2354C24.1094 18.5967 23.5088 19.1094 23.0205 19.7734C22.542 20.4375 22.1807 21.2334 21.9365 22.1611C21.6924 23.0889 21.5703 24.1191 21.5703 25.252V27.4053C21.5703 28.4502 21.6777 29.4316 21.8926 30.3496C22.1172 31.2676 22.4541 32.0732 22.9033 32.7666C23.3525 33.46 23.9238 34.0068 24.6172 34.4072C25.3105 34.7979 26.1309 34.9932 27.0781 34.9932C28.2793 34.9932 29.2363 34.8027 29.9492 34.4219C30.6621 34.041 31.1992 33.4941 31.5605 32.7812C31.9316 32.0684 32.1953 31.2139 32.3516 30.2178Z" fill="#F9BC60"/>
                                             </svg>
                                         </span>
-                                    @elseif($opt_name == 'd' || $opt_name == 'D')
-                                        <span>
+                                        @elseif($opt_name == 'd' || $opt_name == 'D')
+                                            <span>
                                             <svg width="30" height="30" viewBox="0 0 54 54" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <circle cx="27" cy="27" r="26.5" stroke="#F9BC60"/>
                                             <path d="M25.2471 37H20.7939L20.8232 34.7002H25.2471C26.7705 34.7002 28.04 34.3828 29.0557 33.748C30.0713 33.1035 30.833 32.2051 31.3408 31.0527C31.8584 29.8906 32.1172 28.5332 32.1172 26.9805V25.6768C32.1172 24.4561 31.9707 23.3721 31.6777 22.4248C31.3848 21.4678 30.9551 20.6621 30.3887 20.0078C29.8223 19.3438 29.1289 18.8408 28.3086 18.499C27.498 18.1572 26.5654 17.9863 25.5107 17.9863H20.7061V15.6719H25.5107C26.9072 15.6719 28.1816 15.9062 29.334 16.375C30.4863 16.834 31.4775 17.5029 32.3076 18.3818C33.1475 19.251 33.792 20.3057 34.2412 21.5459C34.6904 22.7764 34.915 24.1631 34.915 25.7061V26.9805C34.915 28.5234 34.6904 29.915 34.2412 31.1553C33.792 32.3857 33.1426 33.4355 32.293 34.3047C31.4531 35.1738 30.4375 35.8428 29.2461 36.3115C28.0645 36.7705 26.7314 37 25.2471 37ZM22.3027 15.6719V37H19.4756V15.6719H22.3027Z" fill="#F9BC60"/>
                                             </svg>
                                         </span>
-                                    @endif
-                                    <span style="font-size: 1rem; color: #000000; padding-left: 8px;"
-                                          class="correc_opt">{{ ucwords($op->opt_value) }}</span>
-                                </label>
+                                        @endif
+                                        <span style="font-size: 1rem; color: #000000; padding-left: 8px;"
+                                              class="correc_opt">{{ ucwords($op->opt_value) }}</span>
+                                    </label>
+                                </div>
                             </div>
                         @empty
                         @endforelse
-                    </div>
+                    @else
+                        <div class="row pl-4">
+                            @forelse($question->options as $op)
+                                <div class="col-md-6 pb-2">
+                                    @php
+                                        $opt_name = substr($op->opt_key, '4');
+                                    @endphp
+
+                                    <input type="hidden" class="que_id" value="{{ $op->mcq_question_id }}">
+                                    <label id="label{{ $op->id }}" class="btn mt-3 border shadow"
+                                           style="width: 100%; text-align: left; border: 1px solid #004643 !important; border-radius: 13px; @if ($option_val == $op->id && $option_val !== $question->correct_option->mcq_option_id) background:#c70d0d6e @endif @if ($option_val !== 0 && $op->id === $question->correct_option->mcq_option_id) background:#19875459 @endif">
+                                        <input type="radio" name="option{{ $op->mcq_question_id }}"
+                                               data-full="{{ $question->options }}" data-id="{{ $op->id }}"
+                                               style="visibility: hidden; display: inline-grid;" data-ques="{{ $op->mcq_question_id }}"
+                                               value="{{ $op->opt_value }}"
+                                               @if ($option_val == $op->id) checked @endif class="option">
+                                        @if($opt_name == 'a' || $opt_name == 'A')
+                                            {{--                                        <span>{{ ucwords($opt_name) . ') ' }} </span>--}}
+                                            <span>
+                                            <svg width="30" height="30" viewBox="0 0 54 54" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <circle cx="27" cy="27" r="26.5" stroke="#F9BC60"/>
+                                            <path d="M27.3711 17.5615L20.3105 37H17.4248L25.5547 15.6719H27.415L27.3711 17.5615ZM33.2891 37L26.2139 17.5615L26.1699 15.6719H28.0303L36.1895 37H33.2891ZM32.9229 29.1045V31.4189H20.9404V29.1045H32.9229Z" fill="#F9BC60"/>
+                                            </svg>
+                                        </span>
+                                        @elseif($opt_name == 'b' || $opt_name == 'b')
+                                            <span>
+                                            <svg width="30" height="30" viewBox="0 0 54 54" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <circle cx="27" cy="27" r="26.5" stroke="#F9BC60"/>
+                                            <path d="M27.0781 27.0244H21.6729L21.6436 24.7539H26.5508C27.3613 24.7539 28.0693 24.6172 28.6748 24.3438C29.2803 24.0703 29.749 23.6797 30.0811 23.1719C30.4229 22.6543 30.5938 22.0391 30.5938 21.3262C30.5938 20.5449 30.4424 19.9102 30.1396 19.4219C29.8467 18.9238 29.3926 18.5625 28.7773 18.3379C28.1719 18.1035 27.4004 17.9863 26.4629 17.9863H22.3027V37H19.4756V15.6719H26.4629C27.5566 15.6719 28.5332 15.7842 29.3926 16.0088C30.252 16.2236 30.9795 16.5654 31.5752 17.0342C32.1807 17.4932 32.6396 18.0791 32.9521 18.792C33.2646 19.5049 33.4209 20.3594 33.4209 21.3555C33.4209 22.2344 33.1963 23.0303 32.7471 23.7432C32.2979 24.4463 31.6729 25.0225 30.8721 25.4717C30.0811 25.9209 29.1533 26.209 28.0889 26.3359L27.0781 27.0244ZM26.9463 37H20.5596L22.1562 34.7002H26.9463C27.8447 34.7002 28.6064 34.5439 29.2314 34.2314C29.8662 33.9189 30.3496 33.4795 30.6816 32.9131C31.0137 32.3369 31.1797 31.6582 31.1797 30.877C31.1797 30.0859 31.0381 29.4023 30.7549 28.8262C30.4717 28.25 30.0273 27.8057 29.4219 27.4932C28.8164 27.1807 28.0352 27.0244 27.0781 27.0244H23.0498L23.0791 24.7539H28.5869L29.1875 25.5742C30.2129 25.6621 31.082 25.9551 31.7949 26.4531C32.5078 26.9414 33.0498 27.5664 33.4209 28.3281C33.8018 29.0898 33.9922 29.9297 33.9922 30.8477C33.9922 32.1758 33.6992 33.2988 33.1133 34.2168C32.5371 35.125 31.7217 35.8184 30.667 36.2969C29.6123 36.7656 28.3721 37 26.9463 37Z" fill="#F9BC60"/>
+                                            </svg>
+                                        </span>
+                                        @elseif($opt_name == 'c' || $opt_name == 'C')
+                                            <span>
+                                            <svg width="30" height="30" viewBox="0 0 54 54" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <circle cx="27" cy="27" r="26.5" stroke="#F9BC60"/>
+                                            <path d="M32.3516 30.2178H35.1641C35.0176 31.5654 34.6318 32.7715 34.0068 33.8359C33.3818 34.9004 32.498 35.7451 31.3555 36.3701C30.2129 36.9854 28.7871 37.293 27.0781 37.293C25.8281 37.293 24.6904 37.0586 23.665 36.5898C22.6494 36.1211 21.7754 35.457 21.043 34.5977C20.3105 33.7285 19.7441 32.6885 19.3438 31.4775C18.9531 30.2568 18.7578 28.8994 18.7578 27.4053V25.2812C18.7578 23.7871 18.9531 22.4346 19.3438 21.2236C19.7441 20.0029 20.3154 18.958 21.0576 18.0889C21.8096 17.2197 22.7129 16.5508 23.7676 16.082C24.8223 15.6133 26.0088 15.3789 27.3271 15.3789C28.9385 15.3789 30.3008 15.6816 31.4141 16.2871C32.5273 16.8926 33.3916 17.7324 34.0068 18.8066C34.6318 19.8711 35.0176 21.1064 35.1641 22.5127H32.3516C32.2148 21.5166 31.9609 20.6621 31.5898 19.9492C31.2188 19.2266 30.6914 18.6699 30.0078 18.2793C29.3242 17.8887 28.4307 17.6934 27.3271 17.6934C26.3799 17.6934 25.5449 17.874 24.8223 18.2354C24.1094 18.5967 23.5088 19.1094 23.0205 19.7734C22.542 20.4375 22.1807 21.2334 21.9365 22.1611C21.6924 23.0889 21.5703 24.1191 21.5703 25.252V27.4053C21.5703 28.4502 21.6777 29.4316 21.8926 30.3496C22.1172 31.2676 22.4541 32.0732 22.9033 32.7666C23.3525 33.46 23.9238 34.0068 24.6172 34.4072C25.3105 34.7979 26.1309 34.9932 27.0781 34.9932C28.2793 34.9932 29.2363 34.8027 29.9492 34.4219C30.6621 34.041 31.1992 33.4941 31.5605 32.7812C31.9316 32.0684 32.1953 31.2139 32.3516 30.2178Z" fill="#F9BC60"/>
+                                            </svg>
+                                        </span>
+                                        @elseif($opt_name == 'd' || $opt_name == 'D')
+                                            <span>
+                                            <svg width="30" height="30" viewBox="0 0 54 54" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <circle cx="27" cy="27" r="26.5" stroke="#F9BC60"/>
+                                            <path d="M25.2471 37H20.7939L20.8232 34.7002H25.2471C26.7705 34.7002 28.04 34.3828 29.0557 33.748C30.0713 33.1035 30.833 32.2051 31.3408 31.0527C31.8584 29.8906 32.1172 28.5332 32.1172 26.9805V25.6768C32.1172 24.4561 31.9707 23.3721 31.6777 22.4248C31.3848 21.4678 30.9551 20.6621 30.3887 20.0078C29.8223 19.3438 29.1289 18.8408 28.3086 18.499C27.498 18.1572 26.5654 17.9863 25.5107 17.9863H20.7061V15.6719H25.5107C26.9072 15.6719 28.1816 15.9062 29.334 16.375C30.4863 16.834 31.4775 17.5029 32.3076 18.3818C33.1475 19.251 33.792 20.3057 34.2412 21.5459C34.6904 22.7764 34.915 24.1631 34.915 25.7061V26.9805C34.915 28.5234 34.6904 29.915 34.2412 31.1553C33.792 32.3857 33.1426 33.4355 32.293 34.3047C31.4531 35.1738 30.4375 35.8428 29.2461 36.3115C28.0645 36.7705 26.7314 37 25.2471 37ZM22.3027 15.6719V37H19.4756V15.6719H22.3027Z" fill="#F9BC60"/>
+                                            </svg>
+                                        </span>
+                                        @endif
+                                        <span style="font-size: 1rem; color: #000000; padding-left: 8px;"
+                                              class="correc_opt">{{ ucwords($op->opt_value) }}</span>
+                                    </label>
+                                </div>
+                            @empty
+                            @endforelse
+                        </div>
+                    @endif
                 </div>
             </div>
 @empty
@@ -273,7 +313,7 @@
 
                 @if($page == $total_ques)
                     <div class="col-md-5" style="text-align: center; padding-top: 12px;">
-                        <button type="button" data-bs-toggle="modal" data-bs-target="#testComplete" class="btn px-4 py-2" style="background-color: #E16162; color: #FFFFFF; font-family: Roboto; border-radius: 15px">Submit</button>
+                        <button type="button" data-bs-toggle="modal" data-bs-target="#testComplete" class="btn px-4 py-2"   onclick="prog_quiz()" style="background-color: #E16162; color: #FFFFFF; font-family: Roboto; border-radius: 15px">Submit</button>
                     </div>
                 @endif
             </div>
@@ -355,37 +395,37 @@
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="exampleModal2" style="z-index: 999999" tabindex="-1" role="dialog"
-aria-labelledby="exampleModal2Label" aria-hidden="true">
-<div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title" id="exampleModal2Label">Quiz Progress</h5>
-            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <div class="modal-body">
-            <label @if ($paper_type == 'free') style="display:none" @endif for=""
-                class="mt-3">Time Taken</label>
-            <div @if ($paper_type == 'free') style="display:none" @endif><b id="time-p"></b></div>
-            <label for="" class="mt-3">Correct </label>
-            <div class="progress">
-                <div id="correct-p" class="progress-bar progress-bar-striped bg-success" role="progressbar"
-                    aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-            </div>
-            <label for="" class="mt-3">Incorrect</label>
-            <div class="progress">
-                <div id="incorrect-p" class="progress-bar progress-bar-striped bg-danger" role="progressbar"
-                    aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-            </div>
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-primary" onclick="completeQuize()">Complete</button>
-        </div>
-    </div>
-</div>
-</div>
+{{--<div class="modal fade" id="exampleModal2" style="z-index: 999999" tabindex="-1" role="dialog"--}}
+{{--aria-labelledby="exampleModal2Label" aria-hidden="true">--}}
+{{--<div class="modal-dialog modal-dialog-centered" role="document">--}}
+{{--    <div class="modal-content">--}}
+{{--        <div class="modal-header">--}}
+{{--            <h5 class="modal-title" id="exampleModal2Label">Quiz Progress</h5>--}}
+{{--            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">--}}
+{{--                <span aria-hidden="true">&times;</span>--}}
+{{--            </button>--}}
+{{--        </div>--}}
+{{--        <div class="modal-body">--}}
+{{--            <label @if ($paper_type == 'free') style="display:none" @endif for=""--}}
+{{--                class="mt-3">Time Taken</label>--}}
+{{--            <div @if ($paper_type == 'free') style="display:none" @endif><b id="time-p"></b></div>--}}
+{{--            <label for="" class="mt-3">Correct </label>--}}
+{{--            <div class="progress">--}}
+{{--                <div id="correct-p" class="progress-bar progress-bar-striped bg-success" role="progressbar"--}}
+{{--                    aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>--}}
+{{--            </div>--}}
+{{--            <label for="" class="mt-3">Incorrect</label>--}}
+{{--            <div class="progress">--}}
+{{--                <div id="incorrect-p" class="progress-bar progress-bar-striped bg-danger" role="progressbar"--}}
+{{--                    aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>--}}
+{{--            </div>--}}
+{{--        </div>--}}
+{{--        <div class="modal-footer">--}}
+{{--            <button type="button" class="btn btn-primary" onclick="completeQuize()">Complete</button>--}}
+{{--        </div>--}}
+{{--    </div>--}}
+{{--</div>--}}
+{{--</div>--}}
 
 
     <!-- Test Complete Mdal -->
@@ -412,7 +452,7 @@ aria-labelledby="exampleModal2Label" aria-hidden="true">
                                 </svg>
 
                                 <span>Solved questions</span>
-                                <p>2/2</p>
+                                <p id="correct-p" style="width: auto !important;"></p>
                             </div>
                         </div>
                     </div>
@@ -427,7 +467,7 @@ aria-labelledby="exampleModal2Label" aria-hidden="true">
                                 </svg>
 
                                 <span>Completion time</span>
-                                <p>20 minutes</p>
+                                <p id="time-p"></p>
                             </div>
                         </div>
                     </div>
@@ -494,12 +534,13 @@ aria-labelledby="exampleModal2Label" aria-hidden="true">
             success: function(response) {
                 if (response.success == true) {
                     clearInterval(x);
+                    var total_solved = response.correct + response.incorrect;
                     var corr = response.correct * 100 / response.total;
                     var incorr = response.incorrect * 100 / response.total;
                     $('#time-p').html(toHoursAndMinutes(response.time))
-                    $('#correct-p').css('width', corr + '%')
-                    $('#correct-p').html(`${response.incorrect} / ${response.total}`)
-                    $('#incorrect-p').css('width', incorr + '%')
+                    // $('#correct-p').css('width', corr + '%')
+                    $('#correct-p').html(`${total_solved} / ${response.total}`)
+                    // $('#incorrect-p').css('width', incorr + '%')
                     $('#incorrect-p').html(`${response.incorrect} / ${response.total}`)
                     $('#exampleModal2').modal('show')
                 }
@@ -514,7 +555,7 @@ aria-labelledby="exampleModal2Label" aria-hidden="true">
         const hours = Math.floor(totalMinutes / 60);
         const minutes = totalMinutes % 60;
 
-        return hours+':'+minutes+':'+seconds;
+        return hours+':'+minutes;
     }
 
     progressBar()
@@ -755,7 +796,7 @@ aria-labelledby="exampleModal2Label" aria-hidden="true">
             var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
             // Display the result in the element with id="demo"
-            document.getElementById("demo").innerHTML = '0'+ hours + " : " + minutes;
+            document.getElementById("demo").innerHTML = '0'+ hours + " : " + String(minutes).padStart(2, '0');
 
             // If the count down is finished, write some text
             if (distance < 0) {

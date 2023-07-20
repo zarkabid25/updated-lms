@@ -90,7 +90,7 @@
 
                                 <div class="col-md-6">
                                     <label>Category Image</label>
-                                    <input type="file" name="cat_img" class="form-control" />
+                                    <input type="text" name="cat_img" class="form-control" />
                                 </div>
                             </div>
                         </div>
@@ -124,7 +124,7 @@
 
                                 <div class="col-md-6">
                                     <label>Subject Image</label>
-                                    <input type="file" name="subject_img" class="form-control" />
+                                    <input type="text" name="subject_img" class="form-control" />
                                 </div>
 
                                 <div class="col-md-6 col-sm-12 col-xs-12 sub_subject_name_field mt-3" style="display: none">
@@ -145,7 +145,7 @@
 
                                 <div class="col-md-6 col-sm-12 col-xs-12 sub_subject_name_field mt-3" style="display: none">
                                     <label for="sub_subject_name">Sub-Subject Image</label>
-                                    <input type="file" name="sub_subject_img" id="sub_subject_img" class="form-control">
+                                    <input type="text" name="sub_subject_img" id="sub_subject_img" class="form-control">
                                 </div>
 
                                 <div class="col-md-12 col-sm-12 col-xs-12 sub_subject_name_field mt-3" style="display: none">
